@@ -1,0 +1,26 @@
+{
+  "name": "vote-for-better-life",
+  "version": "1.0.0",
+  "description": "클라우드웹서비스 기말 프로젝트",
+  "main": "database.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngwoon/vote-for-better-life.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngwoon/vote-for-better-life/issues"
+  },
+  "homepage": "https://github.com/ngwoon/vote-for-better-life#readme",
+  "dependencies": {
+    "fast-xml-parser": "^3.17.4",
+    "he": "^1.2.0",
+    "mongoose": "^5.10.16",
+    "request": "^2.88.2"
+  }
+}
