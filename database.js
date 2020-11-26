@@ -200,20 +200,14 @@ module.exports = {
         }
     },
 
-    findDocument: async () => {
-        const codeSchema = new mongoose.Schema({
-            sgId: "string",
-            sgName: "string",
-            sgTypecode: "string",
-            sgVotedate: "string", 
-        });
-        const codes = mongoose.model('codes', codeSchema);
-
+    findDocument: async (collectionName, query) => {
+        const collection = mongoose.model(collectionName, collNameToScheme[collectionName]);
         try {
-            const result = await codes.find({sgId: "20171120"});
+            const result = await collection.find(query);
+            console.log("-- DB find result --");
             console.log(result);
         } catch(error) {
-            console.log("-- db find error --");
+            console.log("-- DB find error --");
             console.log(error);
         }
     },
