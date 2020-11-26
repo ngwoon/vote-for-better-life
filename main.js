@@ -7,7 +7,8 @@ const PublicApiController = require("./publicApiController.js");
 
 async function init() {
     db.dbConnect();
-    db.deleteDocument("codes", {});
+    db.createCollections();
+    // db.deleteDocument("codes", {});
 
     // let jsonData;
     // try {

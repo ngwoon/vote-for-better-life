@@ -136,7 +136,6 @@ const collNameToScheme = {
 //     },
 // });
 
-
 module.exports = {
     dbConnect: async () => {
         mongoose.Promise = global.Promise;
@@ -150,31 +149,42 @@ module.exports = {
         }
     },
 
-    createCollections: () => {
+    checkCollectionExists: (collectionName) => {
+
+    },
+
+    createCollections: async () => {
         // 선거코드 정보 컬렉션 생성
-        let Model = mongoose.model("Codes", collNameToScheme['codes']);
-        const codes = new Model();
-        codes.save();
+        const codes = mongoose.model("Codes", collNameToScheme['codes']);
+        codes.createCollection().then((collection) => {
+            console.log("-- Codes Collection Successfully Created -- ");
+        });
 
         // 사전 투표소 정보 컬렉션 생성
-        Model = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
-        const preVotePlace = new Model();
-        preVotePlace.save();
+        const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
+        preVotePlace.createCollection().then((collection) => {
+            console.log("-- PreVotePlace Collection Successfully Created -- ");
+        });
+        
 
         // 선거일 투표소 정보 컬렉션 생성
-        Model = mongoose.model("votePlace", collNameToScheme['votePlace']);
-        const votePlace = new Model();
-        votePlace.save();
+        const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
+        votePlace.createCollection().then((collection) => {
+            console.log("-- VotePlace Collection Successfully Created -- ");
+        });
 
         // 후보자 정보 컬렉션 생성
-        Model = mongoose.model("candidator", collNameToScheme['candidator']);
-        const candidator = new Model();
-        candidator.save();
+        const candidator = mongoose.model("candidator", collNameToScheme['candidator']);
+        candidator.createCollection().then((collection) => {
+            console.log("-- Candidator Collection Successfully Created -- ");
+        });
+
 
         // 선거 공약 정보 컬렉션 생성
-        Model = mongoose.model("pledge", collNameToScheme['pledge']);
-        const pledge = new Model();
-        pledge.save();
+        const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
+        pledge.createCollection().then((collection) => {
+            console.log("-- Pledge Collection Successfully Created -- ");
+        });
     },
 
     insertDocument: async (collectionName, data) => {
