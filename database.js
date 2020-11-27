@@ -29,41 +29,69 @@ const collNameToScheme = {
         ADDR: "string",
         FLOOR: "string",
     }, {_id: false}),
-    candidator: new mongoose.Schema({
-        SG_ID: "string",
-        SG_NAME: "string",
-        SG_TYPECODE: "string",
+    temp: new mongoose.Schema({
         HUBOID: "string",
-        SGG_NAME: "string",
-        SD_NAME: "string",
-        WIW_NAME: "string",
-        GIHO: "string",
-        GIHO_SANGSE: "string",
-        JD_NAME: "string",
         NAME: "string",
         GENDER: "string",
         AGE: "string",
         ADDR: "string",
         JOB: "string",
         EDU: "string",
-        CAREER: "string",
-        STATUS: "string",
-    }, {_id: false}),
-    pledge: new mongoose.Schema({
+
         SG_ID: "string",
         SG_TYPECODE: "string",
-        HUBOID: "string",
         SGG_NAME: "string",
         SD_NAME: "string",
         WIW_NAME: "string",
+        GIHO: "string",
+        GIHO_SANGSE: "string",
         JD_NAME: "string",
+        CAREER: ["string"],
+        STATUS: "string",
+    }),
+    candidator: new mongoose.Schema({
+        HUBOID: "string",
         NAME: "string",
-        PRMS: {
+        GENDER: "string",
+        AGE: "string",
+        ADDR: "string",
+        JOB: "string",
+        EDU: "string",
+
+        SG_ID: "string",
+        SG_TYPECODE: "string",
+        SGG_NAME: "string",
+        SD_NAME: "string",
+        WIW_NAME: "string",
+        GIHO: "string",
+        GIHO_SANGSE: "string",
+        JD_NAME: "string",
+        CAREER: ["string"],
+        STATUS: "string",
+        PRMS: [{
             ORDER: "string",
             REALM: "string",
             TITLE: "string",
             CONTENT: "string",
-        },
+        }]
+    }, {_id: false}),
+    pledge: new mongoose.Schema({
+        HUBOID: "string",
+        NAME: "string",
+        SG: [{
+            SG_ID: "string",
+            SG_TYPECODE: "string",
+            SGG_NAME: "string",
+            SD_NAME: "string",
+            WIW_NAME: "string",
+            JD_NAME: "string",
+            PRMS: [{
+                ORDER: "string",
+                REALM: "string",
+                TITLE: "string",
+                CONTENT: "string",
+            }]
+        }]
     }, {_id: false}),
 }
 
@@ -73,6 +101,7 @@ const collections = {
     preVotePlace: mongoose.model('preVotePlace', collNameToScheme['preVotePlace']),
     candidator: mongoose.model('candidator', collNameToScheme['candidator']),
     plede: mongoose.model('pledge', collNameToScheme['pledge']),
+    temp: mongoose.model('temp', collNameToScheme['temp']),
 }
 
 module.exports = {
@@ -88,28 +117,24 @@ module.exports = {
         }
     },
 
-    checkCollectionExists: (collectionName) => {
-        
-    },
-
     createCollections: () => {
         // 선거코드 정보 컬렉션 생성
-        const codes = mongoose.model("Codes", collNameToScheme['codes']);
-        codes.createCollection().then((collection) => {
-            console.log("-- Codes Collection Successfully Created -- ");
-        });
+        // const codes = mongoose.model("Codes", collNameToScheme['codes']);
+        // codes.createCollection().then((collection) => {
+        //     console.log("-- Codes Collection Successfully Created -- ");
+        // });
 
-        // 사전 투표소 정보 컬렉션 생성
-        const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
-        preVotePlace.createCollection().then((collection) => {
-            console.log("-- PreVotePlace Collection Successfully Created -- ");
-        });
+        // // 사전 투표소 정보 컬렉션 생성
+        // const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
+        // preVotePlace.createCollection().then((collection) => {
+        //     console.log("-- PreVotePlace Collection Successfully Created -- ");
+        // });
         
-        // 선거일 투표소 정보 컬렉션 생성
-        const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
-        votePlace.createCollection().then((collection) => {
-            console.log("-- VotePlace Collection Successfully Created -- ");
-        });
+        // // 선거일 투표소 정보 컬렉션 생성
+        // const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
+        // votePlace.createCollection().then((collection) => {
+        //     console.log("-- VotePlace Collection Successfully Created -- ");
+        // });
 
         // 후보자 정보 컬렉션 생성
         const candidator = mongoose.model("candidator", collNameToScheme['candidator']);
@@ -117,31 +142,31 @@ module.exports = {
             console.log("-- Candidator Collection Successfully Created -- ");
         });
 
-        // 선거 공약 정보 컬렉션 생성
-        const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
-        pledge.createCollection().then((collection) => {
-            console.log("-- Pledge Collection Successfully Created -- ");
-        });
+        // // 선거 공약 정보 컬렉션 생성
+        // const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
+        // pledge.createCollection().then((collection) => {
+        //     console.log("-- Pledge Collection Successfully Created -- ");
+        // });
     },
 
     dropCollections: () => {
         // 선거코드 정보 컬렉션 제거
-        const codes = mongoose.model("Codes", collNameToScheme['codes']);
-        codes.collection.drop().then((collection) => {
-            console.log("-- Codes Collection Successfully Dropped -- ");
-        });
+        // const codes = mongoose.model("Codes", collNameToScheme['codes']);
+        // codes.collection.drop().then((collection) => {
+        //     console.log("-- Codes Collection Successfully Dropped -- ");
+        // });
 
-        // 사전 투표소 정보 컬렉션 생성
-        const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
-        preVotePlace.collection.drop().then((collection) => {
-            console.log("-- PreVotePlace Collection Successfully Dropped -- ");
-        });
+        // // 사전 투표소 정보 컬렉션 생성
+        // const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
+        // preVotePlace.collection.drop().then((collection) => {
+        //     console.log("-- PreVotePlace Collection Successfully Dropped -- ");
+        // });
         
-        // 선거일 투표소 정보 컬렉션 제거
-        const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
-        votePlace.collection.drop().then((collection) => {
-            console.log("-- VotePlace Collection Successfully Dropped -- ");
-        });
+        // // 선거일 투표소 정보 컬렉션 제거
+        // const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
+        // votePlace.collection.drop().then((collection) => {
+        //     console.log("-- VotePlace Collection Successfully Dropped -- ");
+        // });
 
         // 후보자 정보 컬렉션 제거
         const candidator = mongoose.model("candidator", collNameToScheme['candidator']);
@@ -158,39 +183,45 @@ module.exports = {
 
     insertDocument: async (collectionName, data) => {
         const collection = collections[collectionName];
-
+        let result;
         try {
-            const result = await collection.insertMany(data);
+            result = await collection.insertMany(data);
             console.log("-- db insert result --");
-            console.log(result);
+            // console.log(result);
         } catch(error) {
             console.log("-- db insert error --");
             console.log(error);
+            result = error;
         }
+        return result;
     },
 
     findDocument: async (collectionName, query) => {
         const collection = collections[collectionName];
-
+        let result;
         try {
-            const result = await collection.find(query);
+            result = await collection.find(query);
             console.log("-- DB find result --");
-            console.log(result);
+            // console.log(result);
         } catch(error) {
             console.log("-- DB find error --");
             console.log(error);
+            result = error;
         }
+        return result;
     },
     deleteDocument: async (collectionName, query) => {
         const collection = collections[collectionName];
-        
+        let result;
         try {
-            const result = await collection.deleteMany(query);
+            result = await collection.deleteMany(query);
             console.log("-- DB delete result --");
             console.log(result);
         } catch(error) {
             console.log("-- DB delete error --");
             console.log(error);
+            result = error;
         }
+        return result;
     },
 }

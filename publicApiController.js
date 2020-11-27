@@ -1,4 +1,5 @@
 const PublicApiServices = require("./publicApiServices");
+const parser = require("fast-xml-parser");
 
 const serviceKey = "Rjj2Ly96fAEYLPcwTSh2uwRIQdnVxrDHYbRPoNnVPATdfBB17ok1x1luVwLQi5OqlkvnLU3EpLwJliSQ61cYxw%3D%3D";
 
@@ -27,13 +28,12 @@ module.exports = {
 
         return JSON.parse(response.body).getCommonSgCodeList.item;
     },
-    getPolplcOtlnmapTrnsportInfoInqire: async (sgId, sdName) => {
-        const url = "http://apis.data.go.kr/9760000/PolplcInfoInqireService2/getPrePolplcOtlnmapTrnsportInfoInqire";
-        const pageNo = "";
-        const resultType = "json";
-        // const sdNames = ["서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "인천광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"];
+    getPolplcOtlnmapTrnsportInfoInqire: async (sgId, sdName, sgTypecode) => {
+        const url = "http://apis.data.go.kr/9760000/PolplcInfoInqireService2/getPolplcOtlnmapTrnsportInfoInqire";
+        const pageNo = "1";
+        const numOfRows = "100000000";
         const wiwName = "";
-        const numOfRows = "";
+        const resultType = "json";
 
         let queryParams = "?" + encodeURIComponent("serviceKey") + "=" + serviceKey;
         queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
@@ -54,16 +54,43 @@ module.exports = {
             console.log(error);
         }
 
-        console.log(response.body);
-
         return JSON.parse(response.body).getPolplcOtlnmapTrnsportInfoInqire.item;
+    },
+
+    getPrePolplcOtlnmapTrnsportInfoInqire: async (sgId, sdName) => {
+        const url = "http://apis.data.go.kr/9760000/PolplcInfoInqireService2/getPrePolplcOtlnmapTrnsportInfoInqire";
+        const pageNo = "1";
+        const numOfRows = "100000000";
+        const resultType = "json";
+        const wiwName = "";
+
+        let queryParams = "?" + encodeURIComponent("serviceKey") + "=" + serviceKey;
+        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
+        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(numOfRows);
+        queryParams += "&" + encodeURIComponent("sgId") + "=" + encodeURIComponent(sgId);
+        queryParams += "&" + encodeURIComponent("resultType") + "=" + encodeURIComponent(resultType);
+        queryParams += "&" + encodeURIComponent("sdName") + "=" + encodeURIComponent(sdName);
+        queryParams += "&" + encodeURIComponent("wiwName") + "=" + encodeURIComponent(wiwName);
+
+        let response;
+        try {
+            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+                url: url + queryParams,
+                method: "GET",
+            });
+        } catch(error) {
+            console.log("-- 사전 투표소 정보 API 오류 -- ");
+            console.log(error);
+        }
+
+        return JSON.parse(response.body).getPrePolplcOtlnmapTrnsportInfoInqire.item;
     },
 
     getPofelcddRegistSttusInfoInqire: async (sgId, sgTypecode) => {
         const url = "http://apis.data.go.kr/9760000/PofelcddInfoInqireService/getPofelcddRegistSttusInfoInqire";
         const pageNo = "1";
         const resultType = "json";
-        const numOfRows = "10";
+        const numOfRows = "100000000";
         const sdName = "";
         const sggName = "";
 
@@ -76,8 +103,6 @@ module.exports = {
         queryParams += "&" + encodeURIComponent("sdName") + "=" + encodeURIComponent(sdName);
         queryParams += "&" + encodeURIComponent("sggName") + "=" + encodeURIComponent(sggName);
 
-        console.log(queryParams);
-
         let response;
         try {
             response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
@@ -89,16 +114,58 @@ module.exports = {
             console.log(error);
         }
 
-        console.log(response.body);
-
-        let result = [];
+        let result;
         try {
-            result = JSON.parse(response.body).getPofelcddRegistSttusInfoInqire.item
+            const body = JSON.parse(response.body);
+            result = body.getPofelcddRegistSttusInfoInqire.item;
         } catch(error) {
-            console.log("RESULT ERROR");
+            console.log("서버가 에러를 리턴함.");
+            console.log(error);
+            result = [];
         } finally {
             return result;
         }
-        // return JSON.parse(response.body).getPofelcddRegistSttusInfoInqire.item;
+    },
+
+    getCnddtElecPrmsInfoInqire: async (sgId, sgTypecode, cId) => {
+        const url = "http://apis.data.go.kr/9760000/ElecPrmsInfoInqireService/getCnddtElecPrmsInfoInqire";
+        const pageNo = "1";
+        const resultType = "json";
+        const numOfRows = "100000000";
+        const sdName = "";
+        const sggName = "";
+
+        let queryParams = "?" + encodeURIComponent("ServiceKey") + "=" + serviceKey;
+        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
+        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(numOfRows);
+        queryParams += "&" + encodeURIComponent("sgId") + "=" + encodeURIComponent(sgId);
+        queryParams += "&" + encodeURIComponent("sgTypecode") + "=" + encodeURIComponent(sgTypecode);
+        queryParams += "&" + encodeURIComponent("cnddtId") + "=" + encodeURIComponent(cId);
+        queryParams += "&" + encodeURIComponent("resultType") + "=" + encodeURIComponent(resultType);
+
+        let response;
+        try {
+            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+                url: url + queryParams,
+                method: "GET",
+            });
+        } catch(error) {
+            console.log("-- 선거 공약 정보 API 오류 -- ");
+            console.log(error);
+        }
+
+        let result;
+        try {
+            const body = JSON.parse(response.body);
+            result = body.getCnddtElecPrmsInfoInqire.item;
+            console.log(body);
+        } catch(error) {
+            console.log("서버가 에러를 리턴함.");
+            console.log(response.body);
+            console.log(error);
+            result = [];
+        } finally {
+            return result;
+        }
     },
 };
