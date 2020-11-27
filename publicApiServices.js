@@ -41,7 +41,7 @@ module.exports = {
             });
         });
     },
-    processPublicApiData: async (data) => {
+    processPublicApiData: (data) => {
         let result = [];    
         try {
             const jsonData = parser.parse(data.body, options, true);
@@ -51,7 +51,6 @@ module.exports = {
             if(items[0].sgTypecode === undefined) {
                 result = items;
             } else {
-                console.log("==================im in==================");
                 // 선거 타입 코드가 있다면 선거 타입 코드가 0인 데이터를 걸러낸다.
                 for(item of items) {
                     if(item.sgTypecode !== 0)

@@ -2,139 +2,78 @@ const mongoose = require("mongoose");
 
 const collNameToScheme = {
     codes: new mongoose.Schema({
-        sgId: "string",
-        sgName: "string",
-        sgTypecode: "string",
-        sgVotedate: "string",
-    }, {id: false}),
+        SG_ID: "string",
+        SG_NAME: "string",
+        SG_TYPECODE: "string",
+        SG_VOTEDATE: "string",
+    }, {_id: false}),
     preVotePlace: new mongoose.Schema({
-        sgId: "string",
-        sgName: "string",
-        evPsName: "string",
-        sdName: "string",
-        wiwName: "string",
-        emdName: "string",
-        placeName: "string",
-        addr: "string",
-        floor: "string",
-    }, {id: false}),
+        SG_ID: "string",
+        SG_NAME: "string",
+        EV_PS_Name: "string",
+        SD_NAME: "string",
+        WIW_NAME: "string",
+        EMD_NAME: "string",
+        PLACE_NAME: "string",
+        ADDR: "string",
+        FLOOR: "string",
+    }, {_id: false}),
     votePlace: new mongoose.Schema({
-        sgId: "string",
-        sgName: "string",
-        evPsName: "string",
-        sdName: "string",
-        wiwName: "string",
-        emdName: "string",
-        placeName: "string",
-        addr: "string",
-        floor: "string",
-    }, {id: false}),
+        SG_ID: "string",
+        SG_NAME: "string",
+        PS_NAME: "string",
+        SD_NAME: "string",
+        WIW_NAME: "string",
+        EMD_NAME: "string",
+        PLACE_NAME: "string",
+        ADDR: "string",
+        FLOOR: "string",
+    }, {_id: false}),
     candidator: new mongoose.Schema({
-        sgId: "string",
-        sgName: "string",
-        sgTypecode: "string",
-        huboid: "string",
-        sggName: "string",
-        sdName: "string",
-        wiwName: "string",
-        giho: "string",
-        gihoSangse: "string",
-        jdName: "string",
-        name: "string",
-        gender: "string",
-        age: "string",
-        addr: "string",
-        job: "string",
-        edu: "string",
-        career: "string",
-        status: "string",
-    }, {id: false}),
+        SG_ID: "string",
+        SG_NAME: "string",
+        SG_TYPECODE: "string",
+        HUBOID: "string",
+        SGG_NAME: "string",
+        SD_NAME: "string",
+        WIW_NAME: "string",
+        GIHO: "string",
+        GIHO_SANGSE: "string",
+        JD_NAME: "string",
+        NAME: "string",
+        GENDER: "string",
+        AGE: "string",
+        ADDR: "string",
+        JOB: "string",
+        EDU: "string",
+        CAREER: "string",
+        STATUS: "string",
+    }, {_id: false}),
     pledge: new mongoose.Schema({
-        sgId: "string",
-        sgTypecode: "string",
-        huboid: "string",
-        sggName: "string",
-        sdName: "string",
-        wiwName: "string",
-        jdName: "string",
-        name: "string",
-        prms: {
-            order: "string",
-            realm: "string",
-            title: "string",
-            content: "string",
+        SG_ID: "string",
+        SG_TYPECODE: "string",
+        HUBOID: "string",
+        SGG_NAME: "string",
+        SD_NAME: "string",
+        WIW_NAME: "string",
+        JD_NAME: "string",
+        NAME: "string",
+        PRMS: {
+            ORDER: "string",
+            REALM: "string",
+            TITLE: "string",
+            CONTENT: "string",
         },
-    }, {id: false}),
+    }, {_id: false}),
 }
 
-// const codeSchema = new mongoose.Schema({
-//     sgId: "string",
-//     sgName: "string",
-//     sgTypecode: "string",
-//     sgVotedate: "string",
-// });
-
-// const preVotePlaceSchema = new mongoose.Schema({
-//     sgId: "string",
-//     sgName: "string",
-//     evPsName: "string",
-//     sdName: "string",
-//     wiwName: "string",
-//     emdName: "string",
-//     placeName: "string",
-//     addr: "string",
-//     floor: "string",
-// });
-
-// const votePlaceSchema = new mongoose.Schema({
-//     sgId: "string",
-//     sgName: "string",
-//     evPsName: "string",
-//     sdName: "string",
-//     wiwName: "string",
-//     emdName: "string",
-//     placeName: "string",
-//     addr: "string",
-//     floor: "string",
-// });
-
-// const candidatorSchema = new mongoose.Schema({
-//     sgId: "string",
-//     sgName: "string",
-//     sgTypecode: "string",
-//     huboid: "string",
-//     sggName: "string",
-//     sdName: "string",
-//     wiwName: "string",
-//     giho: "string",
-//     gihoSangse: "string",
-//     jdName: "string",
-//     name: "string",
-//     gender: "string",
-//     age: "string",
-//     addr: "string",
-//     job: "string",
-//     edu: "string",
-//     career: "string",
-//     status: "string",
-// });
-
-// const pledgeSchema = new mongoose.Schema({
-//     sgId: "string",
-//     sgTypecode: "string",
-//     huboid: "string",
-//     sggName: "string",
-//     sdName: "string",
-//     wiwName: "string",
-//     jdName: "string",
-//     name: "string",
-//     prms: {
-//         order: "string",
-//         realm: "string",
-//         title: "string",
-//         content: "string",
-//     },
-// });
+const collections = {
+    codes: mongoose.model('codes', collNameToScheme['codes']),
+    votePlace: mongoose.model('votePlace', collNameToScheme['votePlace']),
+    preVotePlace: mongoose.model('preVotePlace', collNameToScheme['preVotePlace']),
+    candidator: mongoose.model('candidator', collNameToScheme['candidator']),
+    plede: mongoose.model('pledge', collNameToScheme['pledge']),
+}
 
 module.exports = {
     dbConnect: async () => {
@@ -150,10 +89,10 @@ module.exports = {
     },
 
     checkCollectionExists: (collectionName) => {
-
+        
     },
 
-    createCollections: async () => {
+    createCollections: () => {
         // 선거코드 정보 컬렉션 생성
         const codes = mongoose.model("Codes", collNameToScheme['codes']);
         codes.createCollection().then((collection) => {
@@ -166,7 +105,6 @@ module.exports = {
             console.log("-- PreVotePlace Collection Successfully Created -- ");
         });
         
-
         // 선거일 투표소 정보 컬렉션 생성
         const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
         votePlace.createCollection().then((collection) => {
@@ -179,7 +117,6 @@ module.exports = {
             console.log("-- Candidator Collection Successfully Created -- ");
         });
 
-
         // 선거 공약 정보 컬렉션 생성
         const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
         pledge.createCollection().then((collection) => {
@@ -187,8 +124,40 @@ module.exports = {
         });
     },
 
+    dropCollections: () => {
+        // 선거코드 정보 컬렉션 제거
+        const codes = mongoose.model("Codes", collNameToScheme['codes']);
+        codes.collection.drop().then((collection) => {
+            console.log("-- Codes Collection Successfully Dropped -- ");
+        });
+
+        // 사전 투표소 정보 컬렉션 생성
+        const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
+        preVotePlace.collection.drop().then((collection) => {
+            console.log("-- PreVotePlace Collection Successfully Dropped -- ");
+        });
+        
+        // 선거일 투표소 정보 컬렉션 제거
+        const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
+        votePlace.collection.drop().then((collection) => {
+            console.log("-- VotePlace Collection Successfully Dropped -- ");
+        });
+
+        // 후보자 정보 컬렉션 제거
+        const candidator = mongoose.model("candidator", collNameToScheme['candidator']);
+        candidator.collection.drop().then((collection) => {
+            console.log("-- Candidator Collection Successfully Dropped -- ");
+        });
+
+        // 선거 공약 정보 컬렉션 제거
+        const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
+        pledge.collection.drop().then((collection) => {
+            console.log("-- Pledge Collection Successfully Dropped -- ");
+        });
+    },
+
     insertDocument: async (collectionName, data) => {
-        const collection = mongoose.model(collectionName, collNameToScheme[collectionName]);
+        const collection = collections[collectionName];
 
         try {
             const result = await collection.insertMany(data);
@@ -201,7 +170,8 @@ module.exports = {
     },
 
     findDocument: async (collectionName, query) => {
-        const collection = mongoose.model(collectionName, collNameToScheme[collectionName]);
+        const collection = collections[collectionName];
+
         try {
             const result = await collection.find(query);
             console.log("-- DB find result --");
@@ -212,8 +182,8 @@ module.exports = {
         }
     },
     deleteDocument: async (collectionName, query) => {
-        const collection = mongoose.model(collectionName, collNameToScheme[collectionName]);
-
+        const collection = collections[collectionName];
+        
         try {
             const result = await collection.deleteMany(query);
             console.log("-- DB delete result --");
