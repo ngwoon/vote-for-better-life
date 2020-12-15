@@ -1,5 +1,4 @@
 const PublicApiServices = require("./publicApiServices");
-const parser = require("fast-xml-parser");
 
 const serviceKey = "Rjj2Ly96fAEYLPcwTSh2uwRIQdnVxrDHYbRPoNnVPATdfBB17ok1x1luVwLQi5OqlkvnLU3EpLwJliSQ61cYxw%3D%3D";
 
@@ -131,9 +130,7 @@ module.exports = {
         const url = "http://apis.data.go.kr/9760000/ElecPrmsInfoInqireService/getCnddtElecPrmsInfoInqire";
         const pageNo = "1";
         const resultType = "json";
-        const numOfRows = "100000000";
-        const sdName = "";
-        const sggName = "";
+        const numOfRows = "10000000";
 
         let queryParams = "?" + encodeURIComponent("ServiceKey") + "=" + serviceKey;
         queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
@@ -157,15 +154,43 @@ module.exports = {
         let result;
         try {
             const body = JSON.parse(response.body);
-            result = body.getCnddtElecPrmsInfoInqire.item;
             console.log(body);
+            result = body.getCnddtElecPrmsInfoInqire.item;
         } catch(error) {
             console.log("서버가 에러를 리턴함.");
-            console.log(response.body);
-            console.log(error);
+            // console.log(response.body);
+            // console.log(error);
             result = [];
         } finally {
             return result;
         }
+    },
+
+    addressToLatLng: async (address) => {
+        const url = "https://dapi.kakao.com/v2/local/search/address.json";
+        const queryParams = encodeURI("?query=" + address.split('(')[0]); 
+        
+        let response;
+        try {
+            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+                url: url + queryParams,
+                method: "GET",
+                headers: {
+                    "Authorization": "KakaoAK 06cb0854f127fa6c082db0bf3ebcc884",
+                },
+                encoding: "utf-8",
+            });
+        } catch(error) {
+            console.log("-- 카카오 주소 좌표 변환 API 오류 -- ");
+            console.log(error);
+        }
+
+        const body = JSON.parse(response.body);
+
+        if(body.documents === undefined || body.documents.length === 0) {
+            return [];
+        }
+
+        return body.documents[0];
     },
 };

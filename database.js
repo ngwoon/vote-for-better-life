@@ -7,9 +7,9 @@ const collNameToScheme = {
         SG_TYPECODE: "string",
         SG_VOTEDATE: "string",
     }, {_id: false}),
+
     preVotePlace: new mongoose.Schema({
         SG_ID: "string",
-        SG_NAME: "string",
         EV_PS_Name: "string",
         SD_NAME: "string",
         WIW_NAME: "string",
@@ -17,10 +17,11 @@ const collNameToScheme = {
         PLACE_NAME: "string",
         ADDR: "string",
         FLOOR: "string",
+        LAT: "string",
+        LNG: "string",
     }, {_id: false}),
     votePlace: new mongoose.Schema({
         SG_ID: "string",
-        SG_NAME: "string",
         PS_NAME: "string",
         SD_NAME: "string",
         WIW_NAME: "string",
@@ -28,6 +29,8 @@ const collNameToScheme = {
         PLACE_NAME: "string",
         ADDR: "string",
         FLOOR: "string",
+        LAT: "string",
+        LNG: "string",
     }, {_id: false}),
     temp: new mongoose.Schema({
         HUBOID: "string",
@@ -110,74 +113,36 @@ module.exports = {
         try {
             // CONNECT TO MONGODB SERVER
             await mongoose.connect("mongodb://client:client_password@ec2-100-26-95-212.compute-1.amazonaws.com:27017/vote-for-better-life", { useUnifiedTopology: true, useNewUrlParser: true })
-            console.log('Successfully connected to mongodb');
+            console.log('Successfully connect to mongodb');
         } catch(error) {
             console.log("-- db connection error --");
             console.log(error);
         }
     },
 
-    createCollections: () => {
-        // 선거코드 정보 컬렉션 생성
-        // const codes = mongoose.model("Codes", collNameToScheme['codes']);
-        // codes.createCollection().then((collection) => {
-        //     console.log("-- Codes Collection Successfully Created -- ");
-        // });
-
-        // // 사전 투표소 정보 컬렉션 생성
-        // const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
-        // preVotePlace.createCollection().then((collection) => {
-        //     console.log("-- PreVotePlace Collection Successfully Created -- ");
-        // });
-        
-        // // 선거일 투표소 정보 컬렉션 생성
-        // const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
-        // votePlace.createCollection().then((collection) => {
-        //     console.log("-- VotePlace Collection Successfully Created -- ");
-        // });
-
-        // 후보자 정보 컬렉션 생성
-        const candidator = mongoose.model("candidator", collNameToScheme['candidator']);
-        candidator.createCollection().then((collection) => {
-            console.log("-- Candidator Collection Successfully Created -- ");
-        });
-
-        // // 선거 공약 정보 컬렉션 생성
-        // const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
-        // pledge.createCollection().then((collection) => {
-        //     console.log("-- Pledge Collection Successfully Created -- ");
-        // });
+    dbClose: async () => {
+        try {
+            await mongoose.disconnect();
+            console.log('Successfully close connection');
+        } catch(error) {
+            console.log("-- DB close error --");
+            console.log(error);
+        }
     },
 
-    dropCollections: () => {
-        // 선거코드 정보 컬렉션 제거
-        // const codes = mongoose.model("Codes", collNameToScheme['codes']);
-        // codes.collection.drop().then((collection) => {
-        //     console.log("-- Codes Collection Successfully Dropped -- ");
-        // });
-
-        // // 사전 투표소 정보 컬렉션 생성
-        // const preVotePlace = mongoose.model("preVotePlace", collNameToScheme['preVotePlace']);
-        // preVotePlace.collection.drop().then((collection) => {
-        //     console.log("-- PreVotePlace Collection Successfully Dropped -- ");
-        // });
-        
-        // // 선거일 투표소 정보 컬렉션 제거
-        // const votePlace = mongoose.model("votePlace", collNameToScheme['votePlace']);
-        // votePlace.collection.drop().then((collection) => {
-        //     console.log("-- VotePlace Collection Successfully Dropped -- ");
-        // });
-
-        // 후보자 정보 컬렉션 제거
-        const candidator = mongoose.model("candidator", collNameToScheme['candidator']);
-        candidator.collection.drop().then((collection) => {
-            console.log("-- Candidator Collection Successfully Dropped -- ");
+    createCollections: (collectionName) => {
+        // 선거코드 정보 컬렉션 생성
+        const collection = mongoose.model(collectionName, collNameToScheme[collectionName]);
+        collection.createCollection().then((collection) => {
+            console.log("-- ", collectionName, " Collection Successfully Created -- ");
         });
+    },
 
-        // 선거 공약 정보 컬렉션 제거
-        const pledge = mongoose.model("pledge", collNameToScheme['pledge']);
-        pledge.collection.drop().then((collection) => {
-            console.log("-- Pledge Collection Successfully Dropped -- ");
+    dropCollections: (collectionName) => {
+        //선거코드 정보 컬렉션 제거
+        const collection = mongoose.model(collectionName, collNameToScheme['codes']);
+        collection.collection.drop().then((collection) => {
+            console.log("-- ", collectionName, " Collection Successfully Dropped -- ");
         });
     },
 
@@ -191,7 +156,7 @@ module.exports = {
         } catch(error) {
             console.log("-- db insert error --");
             console.log(error);
-            result = error;
+            result = [];
         }
         return result;
     },
@@ -206,10 +171,28 @@ module.exports = {
         } catch(error) {
             console.log("-- DB find error --");
             console.log(error);
-            result = error;
+            result = [];
         }
+
         return result;
     },
+
+    updateDocument: async (collectionName, findQuery, updateQuery) => {
+        const collection = collections[collectionName];
+        let result;
+        try {
+            result = await collection.updateOne(findQuery, updateQuery);
+            console.log("-- DB update result --");
+            console.log(result);
+        } catch(error) {
+            console.log("-- DB update error --");
+            console.log(error);
+            result = [];
+        }
+
+        return result;
+    },
+
     deleteDocument: async (collectionName, query) => {
         const collection = collections[collectionName];
         let result;
@@ -220,7 +203,7 @@ module.exports = {
         } catch(error) {
             console.log("-- DB delete error --");
             console.log(error);
-            result = error;
+            result = [];
         }
         return result;
     },

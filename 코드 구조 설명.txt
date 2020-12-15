@@ -1,0 +1,8 @@
+publicApiController.js, publicApiServices.js는 공공데이터포털에서 데이터를 받아오기 위한 코드입니다.
+database.js는 MongoDB와의 통신을 위한 인터페이스 코드입니다.
+
+main.js에서 publicApiController와 database를 이용해 공공데이터를 받아온 뒤 가공하여 MongoDB에 삽입합니다.
+
+Lambda에 사용된 커스텀 Layer는 이곳에 위치한 node_modules와 database.js를 압축한 것입니다.
+
+Lambda 코드는 Lambda 폴더 안에 존재합니다.
