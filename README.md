@@ -1,5 +1,5 @@
 # vote-for-better-life-backend
- 클라우드웹서비스 기말 프로젝트 백엔드
+ 클라우드웹서비스 기말 프로젝트 - 서버리스 API 서버
  <br/>
 
 ## 스택
