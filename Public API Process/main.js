@@ -7,11 +7,6 @@ const sdNames = ["서울특별시", "부산광역시", "대구광역시", "인�
 
 async function init() {
 
-    await db.dbConnect();
-    const data = await db.findDocument("candidator", {NAME: {"$regex": "정", "$options": "i"}});
-    console.log(data);
-    await db.dbClose();
-
 
     /*
         ec2 몽고DB collections 생성
@@ -185,11 +180,6 @@ async function init() {
     // db.insertDocument("candidator", Object.values(candidators));
 
     // await db.dbClose();
-
-
-
-
-
 
 
 

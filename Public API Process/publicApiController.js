@@ -1,6 +1,7 @@
 const PublicApiServices = require("./publicApiServices");
+const secrets = requre("./secrets.json");
 
-const serviceKey = "Rjj2Ly96fAEYLPcwTSh2uwRIQdnVxrDHYbRPoNnVPATdfBB17ok1x1luVwLQi5OqlkvnLU3EpLwJliSQ61cYxw%3D%3D";
+const serviceKey = secrets.API_KEY;
 
 module.exports = {
     getCommonSgCodeList: async () => {
@@ -16,7 +17,7 @@ module.exports = {
 
         let response = null;
         try {
-            response = await PublicApiServices.getCommonSgCodeList({
+            response = await PublicApiServices.sendPublicApiRequest({
                 url: url + queryParams,
                 method: "GET",
             });
@@ -44,7 +45,7 @@ module.exports = {
 
         let response;
         try {
-            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+            response = await PublicApiServices.sendPublicApiRequest({
                 url: url + queryParams,
                 method: "GET",
             });
@@ -73,7 +74,7 @@ module.exports = {
 
         let response;
         try {
-            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+            response = await PublicApiServices.sendPublicApiRequest({
                 url: url + queryParams,
                 method: "GET",
             });
@@ -104,7 +105,7 @@ module.exports = {
 
         let response;
         try {
-            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+            response = await PublicApiServices.sendPublicApiRequest({
                 url: url + queryParams,
                 method: "GET",
             });
@@ -142,7 +143,7 @@ module.exports = {
 
         let response;
         try {
-            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+            response = await PublicApiServices.sendPublicApiRequest({
                 url: url + queryParams,
                 method: "GET",
             });
@@ -172,7 +173,7 @@ module.exports = {
         
         let response;
         try {
-            response = await PublicApiServices.getPolplcOtlnmapTrnsportInfoInqire({
+            response = await PublicApiServices.sendPublicApiRequest({
                 url: url + queryParams,
                 method: "GET",
                 headers: {
